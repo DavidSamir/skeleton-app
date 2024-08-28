@@ -11,11 +11,36 @@ class ProjectController extends Controller
 {
     public function index()
     {
+        return $this->getAllProjects();
+    }
+
+    public function store(Request $request)
+    {
+        return $this->createProject($request);
+    }
+
+    public function show(string $id)
+    {
+        return $this->getProjectById($id);
+    }
+
+    public function update(Request $request)
+    {
+        return $this->updateProject($request);
+    }
+
+    public function delete(Request $request)
+    {
+        return $this->deleteProject($request);
+    }
+
+    private function getAllProjects()
+    {
         $projects = Project::all();
         return response()->json($projects, Response::HTTP_OK);
     }
 
-    public function store(Request $request)
+    private function createProject(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -29,42 +54,39 @@ class ProjectController extends Controller
         return response()->json($project, Response::HTTP_CREATED);
     }
 
-    public function show(string $id)
+    private function getProjectById(string $id)
     {
         $project = Project::findOrFail($id);
         return response()->json($project, Response::HTTP_OK);
     }
 
-    public function update(Request $request, string $id)
+    private function updateProject(Request $request)
     {
-        $project = Project::findOrFail($id);
-
         $validatedData = $request->validate([
-            'name' => 'string|max:255',
-            'department' => 'string|max:255',
-            'start_date' => 'date',
-            'end_date' => 'date|after_or_equal:start_date',
-            'status' => 'string|max:255',
+            'id' => 'required|string|exists:projects,id',
+            'name' => 'sometimes|string|max:255',
+            'department' => 'sometimes|string|max:255',
+            'start_date' => 'sometimes|date',
+            'end_date' => 'sometimes|date|after_or_equal:start_date',
+            'status' => 'sometimes|string|max:255',
         ]);
 
+        $project = Project::findOrFail($validatedData['id']);
         $project->update($validatedData);
+
         return response()->json($project, Response::HTTP_OK);
     }
 
-    public function delete(Request $request, string $id)
+    private function deleteProject(Request $request)
     {
-        $project = Project::findOrFail($id);
+        $validatedData = $request->validate([
+            'id' => 'required|string|exists:projects,id',
+        ]);
 
-        Timesheet::where('project_id', $id)->delete();
+        $project = Project::findOrFail($validatedData['id']);
 
-        $project->delete();
+        Timesheet::where('project_id', $validatedData['id'])->delete();
 
-        return response()->json(null, Response::HTTP_NO_CONTENT);
-    }
-
-    public function destroy(string $id)
-    {
-        $project = Project::findOrFail($id);
         $project->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
