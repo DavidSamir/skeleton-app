@@ -27,9 +27,17 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/register",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "register"]
+							"path": [
+								"api",
+								"register"
+							]
 						}
 					}
 				},
@@ -51,9 +59,17 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/login",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "login"]
+							"path": [
+								"api",
+								"login"
+							]
 						}
 					}
 				},
@@ -71,9 +87,17 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/logout",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "logout"]
+							"path": [
+								"api",
+								"logout"
+							]
 						}
 					}
 				}
@@ -105,9 +129,17 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "users"]
+							"path": [
+								"api",
+								"users"
+							]
 						}
 					}
 				},
@@ -125,9 +157,17 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "users"]
+							"path": [
+								"api",
+								"users"
+							]
 						}
 					}
 				},
@@ -145,9 +185,18 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users/1",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "users", "1"]
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
 						}
 					}
 				},
@@ -174,9 +223,18 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users/update",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "users", "update"]
+							"path": [
+								"api",
+								"users",
+								"update"
+							]
 						}
 					}
 				},
@@ -203,9 +261,18 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users/delete",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "users", "delete"]
+							"path": [
+								"api",
+								"users",
+								"delete"
+							]
 						}
 					}
 				}
@@ -220,11 +287,6 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
-							{
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
@@ -232,56 +294,63 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Project Alpha\",\n\t\"department\": \"Development\",\n\t\"start_date\": \"2024-01-01\",\n\t\"end_date\": \"2024-12-31\",\n\t\"status\": \"ongoing\"\n}"
+							"raw": "{\n    \"name\": \"Project Alpha\",\n    \"department\": \"Development\",\n    \"start_date\": \"2024-01-01\",\n    \"end_date\": \"2024-12-31\",\n    \"status\": \"ongoing\"\n}"
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/projects",
+							"raw": "http://localhost:8000/api/projects",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"localhost"
+							],
 							"port": "8000",
-							"path": ["api", "projects"]
+							"path": [
+								"api",
+								"projects"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get All Projects",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/projects",
+							"raw": "http://localhost:8000/api/projects",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"localhost"
+							],
 							"port": "8000",
-							"path": ["api", "projects"]
+							"path": [
+								"api",
+								"projects"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get Project by ID",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/projects/1",
+							"raw": "http://localhost:8000/api/projects/1",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"localhost"
+							],
 							"port": "8000",
-							"path": ["api", "projects", "1"]
+							"path": [
+								"api",
+								"projects",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Update Project",
@@ -289,11 +358,6 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
-							{
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
@@ -301,16 +365,23 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": 1,\n\t\"name\": \"Project Alpha Updated\",\n\t\"status\": \"completed\"\n}"
+							"raw": "{\n    \"id\": \"1\",\n    \"name\": \"Project Beta\",\n    \"status\": \"completed\"\n}"
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/projects/update",
+							"raw": "http://localhost:8000/api/projects/update",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"localhost"
+							],
 							"port": "8000",
-							"path": ["api", "projects", "update"]
+							"path": [
+								"api",
+								"projects",
+								"update"
+							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Delete Project",
@@ -318,11 +389,6 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
-							{
 								"key": "Content-Type",
 								"value": "application/json",
 								"type": "text"
@@ -330,16 +396,23 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": 1\n}"
+							"raw": "{\n    \"id\": \"1\"\n}"
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/projects/delete",
+							"raw": "http://localhost:8000/api/projects/delete",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"localhost"
+							],
 							"port": "8000",
-							"path": ["api", "projects", "delete"]
+							"path": [
+								"api",
+								"projects",
+								"delete"
+							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -369,9 +442,17 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/timesheets",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "timesheets"]
+							"path": [
+								"api",
+								"timesheets"
+							]
 						}
 					}
 				},
@@ -389,9 +470,17 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/timesheets",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "timesheets"]
+							"path": [
+								"api",
+								"timesheets"
+							]
 						}
 					}
 				},
@@ -409,9 +498,18 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/timesheets/1",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "timesheets", "1"]
+							"path": [
+								"api",
+								"timesheets",
+								"1"
+							]
 						}
 					}
 				},
@@ -438,9 +536,18 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/timesheets/update",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "timesheets", "update"]
+							"path": [
+								"api",
+								"timesheets",
+								"update"
+							]
 						}
 					}
 				},
@@ -467,9 +574,18 @@
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/timesheets/delete",
 							"protocol": "http",
-							"host": ["127", "0", "0", "1"],
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
 							"port": "8000",
-							"path": ["api", "timesheets", "delete"]
+							"path": [
+								"api",
+								"timesheets",
+								"delete"
+							]
 						}
 					}
 				}
