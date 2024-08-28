@@ -2,47 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $projects = Project::all();
+        return response()->json($projects, Response::HTTP_OK);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'department' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'status' => 'required|string|max:255',
+        ]);
+
+        $project = Project::create($validatedData);
+        return response()->json($project, Response::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
-        //
+        $project = Project::findOrFail($id);
+        return response()->json($project, Response::HTTP_OK);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $project = Project::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'string|max:255',
+            'department' => 'string|max:255',
+            'start_date' => 'date',
+            'end_date' => 'date|after_or_equal:start_date',
+            'status' => 'string|max:255',
+        ]);
+
+        $project->update($validatedData);
+        return response()->json($project, Response::HTTP_OK);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $project = Project::findOrFail($id);
+        $project->delete();
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }
