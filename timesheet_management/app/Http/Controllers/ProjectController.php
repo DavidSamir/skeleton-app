@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Timesheet;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
-
     public function index()
     {
         $projects = Project::all();
@@ -28,7 +28,6 @@ class ProjectController extends Controller
         $project = Project::create($validatedData);
         return response()->json($project, Response::HTTP_CREATED);
     }
-
 
     public function show(string $id)
     {
@@ -50,6 +49,17 @@ class ProjectController extends Controller
 
         $project->update($validatedData);
         return response()->json($project, Response::HTTP_OK);
+    }
+
+    public function delete(Request $request, string $id)
+    {
+        $project = Project::findOrFail($id);
+
+        Timesheet::where('project_id', $id)->delete();
+
+        $project->delete();
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
     public function destroy(string $id)
