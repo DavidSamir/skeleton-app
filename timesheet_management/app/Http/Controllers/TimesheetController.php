@@ -5,22 +5,49 @@ namespace App\Http\Controllers;
 use App\Models\Timesheet;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class TimesheetController extends Controller
 {
     public function index()
     {
-        return $this->getAllTimesheets();
+        try {
+            return $this->getAllTimesheets();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while retrieving timesheets',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function store(Request $request)
     {
-        return $this->createTimesheet($request);
+        try {
+            return $this->createTimesheet($request);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while creating the timesheet',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function show(string $id)
     {
-        return $this->getTimesheetById($id);
+        try {
+            return $this->getTimesheetById($id);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while retrieving the timesheet',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function update(Request $request)
@@ -30,7 +57,19 @@ class TimesheetController extends Controller
 
     public function delete(Request $request)
     {
-        return $this->deleteTimesheet($request);
+        try {
+            return $this->deleteTimesheet($request);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the timesheet',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     private function getAllTimesheets()
@@ -61,30 +100,54 @@ class TimesheetController extends Controller
 
     private function updateTimesheet(Request $request)
     {
-        $validatedData = $request->validate([
-            'id' => 'required|string|exists:timesheets,id',
-            'task_name' => 'sometimes|string|max:255',
-            'date' => 'sometimes|date',
-            'hours' => 'sometimes|integer|min:0',
-            'user_id' => 'sometimes|exists:users,id',
-            'project_id' => 'sometimes|exists:projects,id',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|string|exists:timesheets,id',
+                'task_name' => 'sometimes|string|max:255',
+                'date' => 'sometimes|date',
+                'hours' => 'sometimes|integer|min:0',
+                'user_id' => 'sometimes|exists:users,id',
+                'project_id' => 'sometimes|exists:projects,id',
+            ]);
 
-        $timesheet = Timesheet::findOrFail($validatedData['id']);
-        $timesheet->update($validatedData);
+            $timesheet = Timesheet::findOrFail($validatedData['id']);
+            $timesheet->update($validatedData);
 
-        return response()->json($timesheet, Response::HTTP_OK);
+            return response()->json($timesheet, Response::HTTP_OK);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while updating the timesheet',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     private function deleteTimesheet(Request $request)
     {
-        $validatedData = $request->validate([
-            'id' => 'required|string|exists:timesheets,id',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|string|exists:timesheets,id',
+            ]);
 
-        $timesheet = Timesheet::findOrFail($validatedData['id']);
-        $timesheet->delete();
+            $timesheet = Timesheet::findOrFail($validatedData['id']);
+            $timesheet->delete();
 
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+            return response()->json(null, Response::HTTP_NO_CONTENT);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the timesheet',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

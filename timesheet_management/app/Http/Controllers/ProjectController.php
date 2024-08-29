@@ -8,22 +8,47 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
-
 class ProjectController extends Controller
 {
     public function index()
     {
-        return $this->getAllProjects();
+        try {
+            return $this->getAllProjects();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while retrieving projects',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function store(Request $request)
     {
-        return $this->createProject($request);
+        try {
+            return $this->createProject($request);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while creating the project',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function show(string $id)
     {
-        return $this->getProjectById($id);
+        try {
+            return $this->getProjectById($id);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while retrieving the project',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function update(Request $request)
@@ -33,7 +58,19 @@ class ProjectController extends Controller
 
     public function delete(Request $request)
     {
-        return $this->deleteProject($request);
+        try {
+            return $this->deleteProject($request);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the project',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     private function getAllProjects()
@@ -58,25 +95,37 @@ class ProjectController extends Controller
 
     private function getProjectById(string $id)
     {
-        $project = Project::findOrFail($id);
+        $project = Project::with(['users', 'timesheets'])->findOrFail($id);
         return response()->json($project, Response::HTTP_OK);
     }
 
     private function updateProject(Request $request)
     {
-        $validatedData = $request->validate([
-            'id' => 'required|string|exists:projects,id',
-            'name' => 'sometimes|string|max:255',
-            'department' => 'sometimes|string|max:255',
-            'start_date' => 'sometimes|date',
-            'end_date' => 'sometimes|date|after_or_equal:start_date',
-            'status' => 'sometimes|string|max:255',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|string|exists:projects,id',
+                'name' => 'sometimes|string|max:255',
+                'department' => 'sometimes|string|max:255',
+                'start_date' => 'sometimes|date',
+                'end_date' => 'sometimes|date|after_or_equal:start_date',
+                'status' => 'sometimes|string|max:255',
+            ]);
 
-        $project = Project::findOrFail($validatedData['id']);
-        $project->update($validatedData);
+            $project = Project::findOrFail($validatedData['id']);
+            $project->update($validatedData);
 
-        return response()->json($project, Response::HTTP_OK);
+            return response()->json($project, Response::HTTP_OK);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while updating the project',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     private function deleteProject(Request $request)
@@ -93,13 +142,16 @@ class ProjectController extends Controller
             $project->delete();
 
             return response()->json(null, Response::HTTP_NO_CONTENT);
-
-            return response()->json(null, Response::HTTP_NO_CONTENT);
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Validation Failed',
                 'errors' => $e->errors(),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the project',
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
