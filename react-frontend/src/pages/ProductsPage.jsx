@@ -7,28 +7,43 @@ import { CircularProgress, Typography, Box, Container, Grid, Card, CardContent, 
 import { Link } from 'react-router-dom';
 
 const ProductsPage = () => {
-  const { products, setProducts, pageSize, currentPage } = useContext(DataContext);
+  const { products, setProducts, pageSize, currentPage, filters, setCurrentPage } = useContext(DataContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await axios.get(
-          `https://dummyjson.com/products?limit=${pageSize}&skip=${(currentPage - 1) * pageSize}`
-        );
-        setProducts(response.data.products);
-      } catch (error) {
-        setError('Failed to fetch products.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchProducts = async ({ search = '', pageSize, currentPage }) => {
+    setLoading(true);
+    setError(null);
 
-    fetchProducts();
-  }, [pageSize, currentPage, setProducts]);
+    if (!Number.isInteger(currentPage) || currentPage < 1) {
+      setError('Invalid page number.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const searchQuery = search ? `/search?q=${search}` : `?limit=${pageSize}&skip=${(currentPage - 1) * pageSize}`;
+      const response = await axios.get(
+        `https://dummyjson.com/products${searchQuery}`
+      );
+
+      setProducts(response.data.products);
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
+      setError('Failed to fetch products.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (Number.isInteger(currentPage) && currentPage > 0) {
+      fetchProducts({ search: filters.search, pageSize, currentPage });
+    } else {
+      setError('Invalid page number.');
+      setCurrentPage(1); 
+    }
+  }, [filters.search, pageSize, currentPage, setProducts, setCurrentPage]);
 
   return (
     <Container>
@@ -36,7 +51,7 @@ const ProductsPage = () => {
         Products Page
       </Typography>
       <Box mb={2}>
-        <FilterComponent />
+        <FilterComponent fetchData={fetchProducts} />
       </Box>
       {loading ? (
         <Box display="flex" justifyContent="center" mt={4}>

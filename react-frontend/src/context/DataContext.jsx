@@ -1,18 +1,30 @@
 import React, { createContext, useState } from 'react';
 
-const DataContext = createContext();
+export const DataContext = createContext();
 
-const DataProvider = ({ children }) => {
+export const DataProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
     const [products, setProducts] = useState([]);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
+    const [filters, setFilters] = useState({ search: '' });
 
     return (
-        <DataContext.Provider value={{ users, setUsers, products, setProducts, pageSize, setPageSize, currentPage, setCurrentPage }}>
+        <DataContext.Provider
+            value={{
+                users,
+                setUsers,
+                pageSize,
+                products,
+                setProducts,
+                setPageSize,
+                currentPage,
+                setCurrentPage,
+                filters,
+                setFilters,
+            }}
+        >
             {children}
         </DataContext.Provider>
     );
 };
-
-export { DataContext, DataProvider };
