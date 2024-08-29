@@ -6,6 +6,8 @@ use App\Models\Project;
 use App\Models\Timesheet;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+
 
 class ProjectController extends Controller
 {
@@ -36,7 +38,7 @@ class ProjectController extends Controller
 
     private function getAllProjects()
     {
-        $projects = Project::all();
+        $projects = Project::with(['users', 'timesheets'])->get();
         return response()->json($projects, Response::HTTP_OK);
     }
 
@@ -79,16 +81,25 @@ class ProjectController extends Controller
 
     private function deleteProject(Request $request)
     {
-        $validatedData = $request->validate([
-            'id' => 'required|string|exists:projects,id',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|string|exists:projects,id',
+            ]);
 
-        $project = Project::findOrFail($validatedData['id']);
+            $project = Project::findOrFail($validatedData['id']);
 
-        Timesheet::where('project_id', $validatedData['id'])->delete();
+            Timesheet::where('project_id', $validatedData['id'])->delete();
 
-        $project->delete();
+            $project->delete();
 
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+            return response()->json(null, Response::HTTP_NO_CONTENT);
+
+            return response()->json(null, Response::HTTP_NO_CONTENT);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 }

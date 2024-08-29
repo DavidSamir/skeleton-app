@@ -1,61 +1,114 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = User::query();
-
-        if ($request->has('first_name')) {
-            $query->where('first_name', $request->input('first_name'));
-        }
-        if ($request->has('gender')) {
-            $query->where('gender', $request->input('gender'));
-        }
-        if ($request->has('date_of_birth')) {
-            $query->whereDate('date_of_birth', $request->input('date_of_birth'));
-        }
-
-        return response()->json($query->get());
+        return $this->getAllUsers();
     }
 
     public function store(Request $request)
     {
-        $user = User::create($request->all());
-        return response()->json($user, 201);
+        return $this->createUser($request);
     }
 
-    public function show($id)
+    public function show(string $id)
     {
-        $user = User::find($id);
-        if ($user) {
-            return response()->json($user);
+        return $this->getUserById($id);
+    }
+
+    public function update(Request $request)
+    {
+        return $this->updateUser($request);
+    }
+
+    public function delete(Request $request)
+    {
+        return $this->deleteUser($request);
+    }
+
+    private function getAllUsers()
+    {
+        $users = User::with(['projects', 'timesheets'])->get();
+        return response()->json($users, Response::HTTP_OK);
+    }
+
+    private function createUser(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email|max:255',
+                'password' => 'required|string|min:8',
+                'gender' => 'required|string|max:10',
+                'date_of_birth' => 'required|date',
+            ]);
+
+            $user = User::create($validatedData);
+            return response()->json($user, Response::HTTP_CREATED);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        return response()->json(['message' => 'User not found'], 404);
     }
 
-    public function update(Request $request, $id)
+    private function getUserById(string $id)
     {
-        $user = User::find($id);
-        if ($user) {
-            $user->update($request->all());
-            return response()->json($user);
+        $user = User::with(['projects', 'timesheets'])->findOrFail($id);
+        return response()->json($user, Response::HTTP_OK);
+    }
+
+    private function updateUser(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|string|exists:users,id',
+                'first_name' => 'sometimes|string|max:255',
+                'last_name' => 'sometimes|string|max:255',
+                'email' => 'sometimes|email|unique:users,email|max:255',
+                'password' => 'sometimes|string|min:8',
+                'gender' => 'sometimes|string|max:10',
+                'date_of_birth' => 'sometimes|date',
+            ]);
+
+            $user = User::findOrFail($validatedData['id']);
+            $user->update($validatedData);
+
+            return response()->json($user, Response::HTTP_OK);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        return response()->json(['message' => 'User not found'], 404);
     }
 
-    public function destroy($id)
+    private function deleteUser(Request $request)
     {
-        $user = User::find($id);
-        if ($user) {
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|string|exists:users,id',
+            ]);
+
+            $user = User::findOrFail($validatedData['id']);
             $user->delete();
-            return response()->json(['message' => 'User deleted']);
+
+            return response()->json(null, Response::HTTP_NO_CONTENT);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation Failed',
+                'errors' => $e->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        return response()->json(['message' => 'User not found'], 404);
     }
 }
