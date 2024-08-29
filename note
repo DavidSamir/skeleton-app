@@ -1,0 +1,10 @@
+**React Frontend**
+- The project is really straightforward. Just run `npm run dev` after installing the Node package manager dependencies, and you'll be good to go.
+
+**Laravel Backend (timesheet_management)**
+- This one is also straightforward. I've included the `.env` file, SQLite database, and Postman collection for your convenience.
+- If you are planing to use another database, I've included seeds as well, 
+
+defualt user
+	email - john.doe@example.com
+	password - password
