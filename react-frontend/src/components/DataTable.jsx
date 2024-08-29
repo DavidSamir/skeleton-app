@@ -7,12 +7,12 @@ import {
   TableHead,
   TableRow,
   Paper,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 
 const DataTable = ({ data }) => {
   console.log(data);
-  
+
   if (!data.length) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
@@ -22,7 +22,10 @@ const DataTable = ({ data }) => {
   }
 
   const renderValue = (value) => {
-    if (typeof value === 'object' && value !== null) {
+    if (typeof value === 'string' && value.startsWith('http')) {
+      // Display the image if the URL is an image
+      return <img src={value} alt="User" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%' }} />;
+    } else if (typeof value === 'object' && value !== null) {
       return JSON.stringify(value);
     }
     return value;

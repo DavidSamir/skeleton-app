@@ -2,3 +2,52 @@ $Black: #322625;
 $Grey: #ebebeb;
 $Blue: #c0e3e5;
 $Yellow: #fdc936;
+
+.MuiPaper-root {
+    box-shadow: unset !important;
+    border-bottom: 1px solid $Yellow;
+
+    h6,
+    a {
+        color: $Black
+    }
+}
+
+.home {
+
+    min-height: calc(100dvh - 150px);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 10px;
+    text-align: center;
+
+    >.MuiBox-root {
+        a {
+            padding: 20px 30px;
+            background-color: $Grey;
+            color: $Black;
+            display: block;
+
+            h5 {
+                line-height: 2;
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+.MuiButton-colorPrimary.MuiButton-fullWidth,
+button.MuiButton-colorPrimary {
+    background-color: $Yellow;
+
+    &.Mui-disabled {
+        background-color: $Grey;
+
+    }
+}
+
+.MuiCardMedia-root.MuiCardMedia-media.MuiCardMedia-img {
+    object-fit: contain;
+}

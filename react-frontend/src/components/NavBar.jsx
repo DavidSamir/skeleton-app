@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const NavBar = () => {
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{ backgroundColor: '#fdc936' }}>
             <Toolbar>
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
                     My App

@@ -19,7 +19,19 @@ const UsersPage = () => {
         const response = await axios.get(
           `https://dummyjson.com/users?limit=${pageSize}&skip=${(currentPage - 1) * pageSize}`
         );
-        setUsers(response.data.users);
+        
+        const filteredUsers = response.data.users.map(user => ({
+          image: user.image,
+          "First Name": user.firstName,
+          "Last Name": user.lastName,
+          age: user.age,
+          gender: user.gender,
+          phone: user.phone,
+          "Birth Date": user.birthDate,
+          role: user.role,
+        }));
+
+        setUsers(filteredUsers);
       } catch (error) {
         setError('Failed to fetch users.');
       } finally {
