@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "example-uuid",
+		"_postman_id": "ff5902db-8f68-4119-ac60-9902dbf6c3ef",
 		"name": "Timesheet Management API",
 		"description": "API collection for User, Project, and Timesheet models with authentication",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11292903"
 	},
 	"item": [
 		{
@@ -39,7 +40,8 @@
 								"register"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Login",
@@ -54,7 +56,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"john.doe@example.com\",\n\t\"password\": \"password123\"\n}"
+							"raw": "{\n\t\"email\": \"john.doe@example.com\",\n\t\"password\": \"password\"\n}"
 						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/login",
@@ -71,7 +73,8 @@
 								"login"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Logout",
@@ -99,7 +102,8 @@
 								"logout"
 							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -109,6 +113,16 @@
 				{
 					"name": "Create User",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -124,7 +138,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"first_name\": \"Jane\",\n\t\"last_name\": \"Doe\",\n\t\"date_of_birth\": \"1992-05-14\",\n\t\"gender\": \"female\",\n\t\"email\": \"jane.doe@example.com\",\n\t\"password\": \"password123\"\n}"
+							"raw": "{\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"securepassword\",\n    \"gender\": \"male\",\n    \"date_of_birth\": \"1990-01-01\"\n}"
 						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users",
@@ -141,19 +155,24 @@
 								"users"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get All Users",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users",
 							"protocol": "http",
@@ -169,11 +188,22 @@
 								"users"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get User by ID",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -198,18 +228,24 @@
 								"1"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Update User",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
 							{
 								"key": "Content-Type",
 								"value": "application/json",
@@ -218,7 +254,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": 1,\n\t\"first_name\": \"John Updated\",\n\t\"last_name\": \"Doe Updated\"\n}"
+							"raw": "{\n\t\"id\": \"1\",\n\t\"first_name\": \"John Updated\",\n\t\"last_name\": \"Doe Updated\"\n}"
 						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users/update",
@@ -236,11 +272,22 @@
 								"update"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Delete User",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -256,7 +303,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": 1\n}"
+							"raw": "{\n\t\"id\": \"4\"\n}"
 						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/users/delete",
@@ -274,7 +321,8 @@
 								"delete"
 							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
 		},
@@ -284,6 +332,16 @@
 				{
 					"name": "Create Project",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -314,6 +372,16 @@
 				{
 					"name": "Get All Projects",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -334,6 +402,16 @@
 				{
 					"name": "Get Project by ID",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -355,6 +433,16 @@
 				{
 					"name": "Update Project",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -386,6 +474,16 @@
 				{
 					"name": "Delete Project",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -396,7 +494,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"1\"\n}"
+							"raw": "{\n    \"id\": \"5\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8000/api/projects/delete",
@@ -422,6 +520,16 @@
 				{
 					"name": "Create Timesheet",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -454,11 +562,22 @@
 								"timesheets"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get All Timesheets",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -482,11 +601,22 @@
 								"timesheets"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Get Timesheet by ID",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -511,11 +641,22 @@
 								"1"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Update Timesheet",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -549,11 +690,22 @@
 								"update"
 							]
 						}
-					}
+					},
+					"response": []
 				},
 				{
 					"name": "Delete Timesheet",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{LaravelToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -587,7 +739,8 @@
 								"delete"
 							]
 						}
-					}
+					},
+					"response": []
 				}
 			]
 		}
@@ -597,6 +750,10 @@
 			"key": "access_token",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "LaravelToken",
+			"value": "1|L00IL3hICCEIaEonrYvOPt8JR9Kq2PTZaBGBSo9la98581bb"
 		}
 	]
 }
